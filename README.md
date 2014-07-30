@@ -27,13 +27,18 @@ This PPA is excellent and is what I use on all my Linux dev and build machines: 
 Specifically:
 
 - `sudo apt-get update`
-- `sudo apt-get install python-software-properties`
+- `sudo apt-get install python-software-properties` for Ubuntu 12.04 and below
+- `sudo apt-get install software-properties-common` for Ubuntu 12.04 and above
 - `sudo add-apt-repository -y ppa:hvr/ghc`
+- `sudo apt-add-repository "deb http://ppa.launchpad.net/hvr/ghc/ubuntu precise main"` if not Ubuntu 12.04
+- `rm /etc/apt/sources.list.d/hvr-ghc-<some ubuntu version>.list` if not Ubuntu 12.04
 - `sudo apt-get update`
-- `sudo apt-get install cabal-install-1.20 ghc-7.8.2 happy-1.19.3 alex-3.1.3`
+- `sudo apt-get install cabal-install-1.20 ghc-7.8.3 happy-1.19.4 alex-3.1.3`
 
-Then add `~/.cabal/bin:/opt/cabal/1.20/bin:/opt/ghc/7.8.2/bin:/opt/happy/1.19.3/bin:/opt/alex/3.1.3/bin` to your PATH (bash_profile, zshrc, bashrc, etc)
+Then add `~/.cabal/bin:/opt/cabal/1.20/bin:/opt/ghc/7.8.3/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin` to your PATH (bash_profile, zshrc, bashrc, etc)
 
+*Optional* You could also add `.cabal-sandbox/bin` to your path. Code that you are actively developing will be available to you from the command line.
+This only works when your current working directory is a cabal sandbox.
 
 ### Debian
 
@@ -52,7 +57,7 @@ For other Debian versions, just replace all occurences of "wheezy" with your ver
 
 If, for some reason, the file `/etc/apt/sources.list.d/hvr-ghc-wheezy.list` does not exist, try the same command but with `/etc/apt/sources.list` instead.
 
-#### Manual compilation 
+#### Manual compilation
 You can follow the guide written for Mac OS X: http://www.davesquared.net/2014/05/platformless-haskell.html. Notes:
 - set your prefix accordingly when configuring ghc
 - instead of grabbing the `cabal-install` binary, grab the source and then run `bootstrap.sh` script.
@@ -65,13 +70,9 @@ To install Haskell 7.8x from the unofficial repo (Fedora 21+ will include it in 
 
 ### Arch Linux
 
-To install Haskell from the official repos on Arch Linux
+To install Haskell from the official repos on Arch Linux, run
 
-Update your mirrorlist
-- `sudo pacman -Syy`
-
-Download Haskell
-- `sudo pacman -S cabal-install ghc happy alex haddock`
+    su -c "pacman -S cabal-install ghc happy alex haddock"
 
 ### Mac OS X
 
@@ -106,7 +107,7 @@ You don't need this if you use the .app, but if it doesn't work for you, try thi
 ## Yorgey course - *Do this first*, this is the primary way I recommend being introduced to Haskell.
 
 
-http://www.seas.upenn.edu/~cis194/lectures.html Brent Yorgey's course is the best I've found so far and replaces both Yann Esposito's HF&H and the NICTA course. This course is particularly valuable as it will not only equip you to write Haskell but also help you understand parser combinators. 
+http://www.seas.upenn.edu/~cis194/lectures.html Brent Yorgey's course is the best I've found so far and replaces both Yann Esposito's HF&H and the NICTA course. This course is particularly valuable as it will not only equip you to write Haskell but also help you understand parser combinators.
 
 The only reason you shouldn't start with cis194 is if you are not a programmer or are an inexperienced one. If that's the case, start with http://learnyouahaskell.com/ and transition to cis194.
 
@@ -218,6 +219,16 @@ If you need JavaScript, you probably want Purescript for generating JS. Purescri
 
 - http://www.christopherbiscardi.com/2014/06/22/getting-started-with-purescript/ Great guide for getting started
 
+## Parsing and generating JSON
+
+- http://blog.raynes.me/blog/2012/11/27/easy-json-parsing-in-haskell-with-aeson/
+
+- http://bitemyapp.com/posts/2014-04-11-aeson-and-user-created-types.html
+
+- http://bitemyapp.com/posts/2014-04-17-parsing-nondeterministic-data-with-aeson-and-sum-types.html
+
+- https://www.fpcomplete.com/school/starting-with-haskell/libraries-and-frameworks/text-manipulation/json
+
 ## Laziness, strictness, guarded recursion
 
 - http://chimera.labs.oreilly.com/books/1230000000929/ch02.html Marlow's book about parallelism and concurrency has one of the best introductions to laziness and normal form I've found. Use other material too if it doesn't stick immediately.
@@ -260,27 +271,11 @@ let a = 1 * a -- not guarded, (*) is strict
 
 ## Parallelism/Concurrency
 
-- http://chimera.labs.oreilly.com/books/1230000000929 This book by Simon Marlow is probably the best I've ever read on the topics of Parallelism and Concurrency: 
+- http://chimera.labs.oreilly.com/books/1230000000929 This book by Simon Marlow is probably the best I've ever read on the topics of Parallelism and Concurrency:
 
 - http://kukuruku.co/hub/haskell/haskell-testing-a-multithread-application A thorough walk-through on testing & incremental development of a multi-threaded application in Haskell
 
 - http://www.haskell.org/haskellwiki/Functional_Reactive_Programming
-
-## Recursion Schemes
-
-Some of the crazy *-morphism words you've heard are actually about recursion. NB - before tackling this material you should know how to implement foldr for lists and at least one other data structure, such as a tree. (folds are catamorphisms) Knowing how to implement an unfold (anamorphism) for the same will round things out a bit.
-
-This material dovetails with traversable and foldable.
-
-- http://patrickthomson.ghost.io/an-introduction-to-recursion-schemes/
-
-- http://fho.f12n.de/posts/2014-05-07-dont-fear-the-cat.html - good demonstration of how hylomorphism is the composition of cata and ana.
-
-- http://comonad.com/reader/2009/recursion-schemes/ - this field guide is excellent.
-
-- http://eprints.eemcs.utwente.nl/7281/01/db-utwente-40501F46.pdf
-
-- https://www.fpcomplete.com/user/edwardk/recursion-schemes/catamorphisms
 
 ## Lenses and Prisms
 
@@ -308,7 +303,7 @@ Also, reimplement Control.Monad. Functions like `mapM` or `sequence` are good op
 
 The NICTA course can be used as a guide to this process, which will also involve writing your own Applicative as well.
 
-From: 
+From:
 - http://www.reddit.com/r/haskell/comments/29eke6/basic_program_ideas_for_learning_about_monads/cik5aj6
 - http://www.reddit.com/r/haskell/comments/29eke6/basic_program_ideas_for_learning_about_monads/cik5trg
 
@@ -317,6 +312,22 @@ From:
 - https://github.com/kqr/gists/blob/master/articles/gentle-introduction-monad-transformers.md
 
 - https://vimeo.com/73648150
+
+## Recursion Schemes
+
+Some of the crazy *-morphism words you've heard are actually about recursion. NB - before tackling this material you should know how to implement foldr for lists and at least one other data structure, such as a tree. (folds are catamorphisms) Knowing how to implement an unfold (anamorphism) for the same will round things out a bit.
+
+This material dovetails with traversable and foldable.
+
+- http://patrickthomson.ghost.io/an-introduction-to-recursion-schemes/
+
+- http://fho.f12n.de/posts/2014-05-07-dont-fear-the-cat.html - good demonstration of how hylomorphism is the composition of cata and ana.
+
+- http://comonad.com/reader/2009/recursion-schemes/ - this field guide is excellent.
+
+- http://eprints.eemcs.utwente.nl/7281/01/db-utwente-40501F46.pdf
+
+- https://www.fpcomplete.com/user/edwardk/recursion-schemes/catamorphisms
 
 ## Type and Category Theory (*not* needed to actually write Haskell, just for those interested!)
 
@@ -360,6 +371,8 @@ Didn't know where else to put these:
 
 ## Initial and Final, DSLs, Finally Tagless
 
+- http://creativelad.wordpress.com/2013/11/28/final-encodings-part-1-a-quick-demonstration/
+
 - http://martijn.van.steenbergen.nl/journal/2009/10/18/transforming-polymorphic-values/
 
 - http://martijn.van.steenbergen.nl/journal/2009/11/12/gadts-in-haskell-98/
@@ -382,6 +395,20 @@ Didn't know where else to put these:
 
 - http://stackoverflow.com/questions/24000465/step-by-step-deep-explain-the-power-of-coyoneda-preferably-in-scala-throu
 
+## GHC Core and performance tuning
+
+- [Write Haskell as Fast as C](write_haskell_as_fast_as_c.md)
+
+- https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/CoreSynType
+
+- https://hackage.haskell.org/package/ghc-core
+
+- http://stackoverflow.com/questions/6121146/reading-ghc-core
+
+- http://donsbot.wordpress.com/2008/06/04/haskell-as-fast-as-c-working-at-a-high-altitude-for-low-level-performance/
+
+- http://book.realworldhaskell.org/read/profiling-and-optimization.html
+
 ## Dependent typing
 
 - http://bitemyapp.com/posts/2014-04-05-grokking-sums-and-constructors.html squint hard.
@@ -399,3 +426,8 @@ Didn't know where else to put these:
 ## Extended Reading list (some is already included here)
 
 - http://www.stephendiehl.com/posts/essential_haskell.html
+
+## Dialogues
+
+[Dialogues](dialogues.md) these are actually pretty important and
+helpful. Look here for deep dives on a variety of topics.
